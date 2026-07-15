@@ -1,99 +1,120 @@
-# Stonework Risk — launch page
+# Stonework Risk — launch site
 
-A single-page Astro site. Editorial / architect aesthetic, off-white + navy + sand,
-matched to the logo. Lead capture via Formspree.
+A single-page "launching soon" website for Stonework Risk, built with [Astro](https://astro.build).
+Editorial / architect aesthetic matched to the logo. Lead capture runs through Formspree.
 
----
-
-## Preview it right now (no install)
-
-Double-click **`preview.html`**. It's a static copy of the page that opens in any
-browser so you can react to the design. The real site lives in `src/pages/index.astro`.
+**Live:** https://stoneworkrisk.com
+**Repo:** https://github.com/krisg13/stoneworkrisk
+**Hosting:** Cloudflare Pages (auto-deploys on every push to `main`)
 
 ---
 
-## 1. Set up the lead form (Formspree) — 3 minutes
+## How it's wired together
 
-1. Go to https://formspree.io and sign up (free tier = 50 submissions/month).
-2. Create a new form. Set the notification email to **principals@stoneworkrisk.com**.
-3. Formspree gives you an endpoint like `https://formspree.io/f/abcdwxyz`.
-4. Open `src/pages/index.astro`, find the line near the top:
-   ```js
-   const formAction = "https://formspree.io/f/YOUR_FORM_ID";
-   ```
-   Replace `YOUR_FORM_ID` with your real ID. (Also update it in `preview.html` if you
-   want the preview's form to work — line with `action="https://formspree.io/f/YOUR_FORM_ID"`.)
-5. The first real submission triggers a one-time Formspree confirmation email — click it
-   to activate the form.
+| Piece | Where it lives |
+|-------|----------------|
+| Source code | GitHub repo `krisg13/stoneworkrisk` |
+| Build & hosting | Cloudflare Pages — builds `main` with `npm run build`, serves the `dist/` output |
+| Domain & DNS | Cloudflare (nameservers `nico` / `simone.ns.cloudflare.com`) |
+| Email | Google Workspace (MX/SPF/DKIM/DMARC records in Cloudflare DNS) |
+| Form submissions | Formspree → principals@stoneworkrisk.com |
 
-That's it. Every submission then emails you name + email + optional note.
+Push a change to `main` → Cloudflare rebuilds and redeploys automatically in about a minute.
 
 ---
 
-## 2. Run it locally (optional)
+## Editing the site
 
-Requires Node 18+.
+Everything is in **`src/pages/index.astro`** — one file. The top of it has the easy-to-change values:
 
-```bash
-cd website
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # outputs static site to dist/
+```js
+const email = "principals@stoneworkrisk.com";
+const linkedin = "https://www.linkedin.com/in/kris-gardner";
+const formAction = "https://formspree.io/f/mjgdanrd";   // Formspree endpoint
+```
+
+Below that:
+- **Copy** — the headline, the two intro paragraphs, the three service blurbs, and the footer text are plain HTML you can edit directly.
+- **Colors / fonts** — the `:root` block in the `<style>` section. Brand colors are
+  navy `#0B1D33`, paper `#F8F7F4`, sand `#B7A894`. Fonts are Cormorant Garamond
+  (display), EB Garamond (body), and Montserrat (labels), loaded from Google Fonts.
+- **Wordmark** — "stonework / RISK" is recreated in live text (not an image), so it stays
+  crisp at any size.
+
+**`preview.html`** is a standalone copy of the page — double-click it to view the design in a
+browser without building anything. If you change `index.astro`, mirror the change here too if
+you want the preview to match (optional).
+
+### How to push an edit (no command line needed)
+
+You've been editing through GitHub's web interface, which is the simplest path:
+
+1. Go to the file on GitHub, e.g.
+   https://github.com/krisg13/stoneworkrisk/blob/main/src/pages/index.astro
+2. Click the **pencil** (Edit) icon.
+3. Make your change → **Commit changes** at the bottom.
+4. Cloudflare detects the commit and redeploys automatically. Refresh the site in ~1 minute.
+
+---
+
+## The lead form (Formspree)
+
+The form posts to `https://formspree.io/f/mjgdanrd`, which emails submissions to
+principals@stoneworkrisk.com. It's already active and tested.
+
+To change where submissions go, or to add an auto-reply, log in at
+[formspree.io](https://formspree.io) and edit the form's settings. If you ever create a new
+form, paste its new endpoint into the `formAction` line in `index.astro`.
+
+Optional: to send visitors back to your own site after they submit (instead of Formspree's
+default thank-you page), add a hidden field inside the `<form>`:
+
+```html
+<input type="hidden" name="_next" value="https://stoneworkrisk.com/?thanks=1" />
 ```
 
 ---
 
-## 3. Deploy — recommended path: GitHub → Cloudflare Pages (free)
+## Domain & DNS notes
 
-### a. Put the code on GitHub
-1. Create a new repo at https://github.com/new — name it `stonework-risk`, keep it private.
-2. In a terminal inside the `website` folder:
-   ```bash
-   git init
-   git add .
-   git commit -m "Stonework Risk launch page"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/stonework-risk.git
-   git push -u origin main
-   ```
-
-### b. Connect Cloudflare Pages
-1. Go to https://dash.cloudflare.com → **Workers & Pages** → **Create** → **Pages** →
-   **Connect to Git**.
-2. Pick the `stonework-risk` repo.
-3. Build settings:
-   - **Framework preset:** Astro
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-4. **Save and Deploy.** In ~1 minute you get a live URL like
-   `stonework-risk.pages.dev`.
-
-### c. Point your domain (www.stoneworkrisk.com)
-Easiest if your DNS is on Cloudflare:
-1. In Cloudflare, add the site `stoneworkrisk.com` (free plan) and update your
-   registrar's nameservers to the two Cloudflare gives you. (Skip if it's already on
-   Cloudflare.)
-2. In the Pages project → **Custom domains** → **Set up a domain** → enter
-   `www.stoneworkrisk.com`. Cloudflare adds the DNS record automatically.
-3. Add `stoneworkrisk.com` (apex) too and set it to redirect to `www`.
-4. HTTPS is automatic.
-
-> Prefer Vercel? Same idea: import the GitHub repo at vercel.com, it auto-detects Astro,
-> deploy, then add the domain under Project → Settings → Domains. Cloudflare Pages is the
-> recommendation for a static site this size — fastest edge network, generous free tier.
+- `stoneworkrisk.com` and `www.stoneworkrisk.com` are both attached as **Custom domains**
+  on the Cloudflare Pages project. Both must stay attached for the site to resolve.
+- A redirect rule forwards one to the other so there's a single canonical address.
+- **Do not delete the email records** in Cloudflare DNS — the five `MX` records and the
+  `SPF` / `DKIM` / `DMARC` / `google-site-verification` `TXT` records run Google Workspace
+  mail. Removing them breaks email.
+- If an old/cached page ever sticks around after a change, purge it via
+  Cloudflare → **Caching** → **Configuration** → **Purge Everything**.
 
 ---
 
-## Editing content later
+## Running locally (optional)
 
-Everything is in `src/pages/index.astro`:
-- **Copy** — headline, the two paragraphs, the three service blurbs, footer text.
-- **Contact** — `email` and `linkedin` constants at the top.
-- **Colors / fonts** — the `:root` block in the `<style>` section.
-- **Fonts** — currently Cormorant Garamond (display) + EB Garamond (body) +
-  Montserrat (labels), loaded from Google Fonts. Swap the `<link>` and the
-  `--display / --body / --label` variables to change them.
+Requires [Node.js](https://nodejs.org) 18+.
 
-The "stonework / RISK" wordmark is recreated in live text (not an image) so it stays
-crisp at any size. If you'd rather use the actual logo PNG/SVG, drop it in `public/` and
-replace the `.mark` block with an `<img>`.
+```bash
+cd website
+npm install
+npm run dev      # live preview at http://localhost:4321
+npm run build    # produces the static site in dist/
+```
+
+You don't need to run any of this to deploy — Cloudflare builds it for you on every push.
+
+---
+
+## Project structure
+
+```
+website/
+├── src/
+│   ├── pages/
+│   │   └── index.astro     # the entire page (markup + styles)
+│   └── env.d.ts            # Astro type declarations (auto-generated)
+├── public/
+│   └── favicon.svg         # browser-tab icon
+├── preview.html            # standalone preview, openable in a browser
+├── astro.config.mjs        # Astro config (site URL)
+├── package.json            # dependencies & scripts
+└── README.md               # this file
+```

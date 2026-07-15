@@ -18,11 +18,20 @@ const year = new Date().getFullYear();
       name="description"
       content="Stonework Risk is an independent insurance and risk advisory for entrepreneurs, business owners, and high-net-worth individuals. Dallas, Texas. Launching soon."
     />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
     <meta property="og:title" content="Stonework Risk" />
     <meta property="og:description" content="An independent risk advisory. Built for those who build. Dallas, Texas." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.stoneworkrisk.com" />
+    <meta property="og:image" content="https://www.stoneworkrisk.com/stonework-og.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://www.stoneworkrisk.com/stonework-og.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -99,26 +108,12 @@ const year = new Date().getFullYear();
         margin: 60px 0;
       }
 
-      /* recreated wordmark */
+      /* brand wordmark */
       .mark { margin: 0 0 4px; }
-      .mark .word {
-        font-family: var(--display);
-        font-weight: 500;
-        font-size: clamp(52px, 11vw, 104px);
-        line-height: 0.95;
-        letter-spacing: -0.01em;
-        color: var(--navy);
+      .mark .logo {
         display: block;
-      }
-      .mark .sub {
-        font-family: var(--label);
-        font-weight: 400;
-        font-size: clamp(13px, 2.4vw, 19px);
-        letter-spacing: 0.55em;
-        text-indent: 0.55em;
-        color: var(--sand);
-        display: block;
-        margin-top: 6px;
+        width: clamp(240px, 46vw, 440px);
+        height: auto;
       }
 
       .rule {
@@ -281,8 +276,13 @@ const year = new Date().getFullYear();
       <p class="eyebrow">Independent Risk Advisory · Dallas, Texas</p>
 
       <div class="mark">
-        <span class="word">stonework</span>
-        <span class="sub">RISK</span>
+        <img
+          class="logo"
+          src="/stonework-wordmark.svg"
+          width="1294"
+          height="386"
+          alt="Stonework Risk"
+        />
       </div>
 
       <div class="rule"></div>
