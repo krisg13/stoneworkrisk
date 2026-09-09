@@ -1,11 +1,107 @@
 ---
-// Stonework Risk — launch page
+// Stonework Risk — stoneworkrisk.com
 // Single-page Astro site. All styling is inline for a self-contained build.
-const email = "principals@stoneworkrisk.com";
-const linkedin = "https://www.linkedin.com/in/kris-gardner";
-// Paste your Formspree endpoint here after creating a form (see README).
+
+// ─── FILL IN BEFORE PUSHING ────────────────────────────────────────────
+// Anything left as an empty string simply does not render. Nothing fake
+// ships if you forget one — the phone link, license line and founding
+// year each disappear rather than showing a placeholder.
+const phone      = "";   // e.g. "(214) 555-0142"
+const tdiLicense = "";   // Texas Dept. of Insurance agency license number
+const founded    = "";   // e.g. "2025"  → renders as "Established 2025"
+
+// ─── Confirmed details ─────────────────────────────────────────────────
+const email      = "principals@stoneworkrisk.com";
+const linkedin   = "https://www.linkedin.com/in/kris-gardner";
 const formAction = "https://formspree.io/f/mjgdanrd";
-const year = new Date().getFullYear();
+const hours      = "Monday–Friday · 8:00am–5:00pm CT";
+
+const address = {
+  street: "100 Crescent Court, Suite 700",
+  city:   "Dallas",
+  state:  "TX",
+  zip:    "75201",
+};
+
+const year      = new Date().getFullYear();
+const phoneHref = phone.replace(/[^0-9+]/g, "");
+
+const coverage = [
+  {
+    group: "Commercial",
+    lines: [
+      "General Liability",
+      "Commercial Property",
+      "Commercial Auto & Fleet",
+      "Workers' Compensation",
+      "Umbrella & Excess",
+      "Cyber Liability",
+      "Management Liability — D&O, EPLI",
+      "Business Owner's Policy",
+    ],
+  },
+  {
+    group: "Specialty Practices",
+    lines: [
+      "Auto dealers & open lot",
+      "Gaming and route operators",
+      "Outfitters, guides & outdoor recreation",
+      "ICHRA small-group benefits",
+    ],
+  },
+  {
+    group: "Personal & Private Client",
+    lines: [
+      "Homeowners & high-value residence",
+      "Personal auto & collector vehicles",
+      "Personal umbrella",
+      "Valuables, art & collections",
+    ],
+  },
+];
+
+const approach = [
+  {
+    num: "01",
+    title: "Exposure review",
+    body: "We start with how the business actually runs — operations, contracts, payroll, fleet, property — and find where the exposure really sits before anyone talks about premium.",
+  },
+  {
+    num: "02",
+    title: "Market access",
+    body: "As an independent agency we place through national carriers and wholesale markets, so the structure follows the risk instead of whatever one carrier happens to sell.",
+  },
+  {
+    num: "03",
+    title: "Ongoing advocacy",
+    body: "Renewals get worked ahead of the date rather than on it, and when a claim comes we handle the carrier side of it for you.",
+  },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "InsuranceAgency",
+  name: "Stonework Risk",
+  description:
+    "Independent insurance and risk advisory in Dallas, Texas, serving entrepreneurs, business owners, and high-net-worth individuals.",
+  url: "https://www.stoneworkrisk.com",
+  logo: "https://www.stoneworkrisk.com/stonework-wordmark-navy.png",
+  image: "https://www.stoneworkrisk.com/stonework-og.png",
+  email,
+  ...(phone ? { telephone: phone } : {}),
+  ...(founded ? { foundingDate: founded } : {}),
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: address.street,
+    addressLocality: address.city,
+    addressRegion: address.state,
+    postalCode: address.zip,
+    addressCountry: "US",
+  },
+  areaServed: { "@type": "State", name: "Texas" },
+  openingHours: "Mo-Fr 08:00-17:00",
+  sameAs: [linkedin],
+};
 ---
 
 <!doctype html>
@@ -13,11 +109,14 @@ const year = new Date().getFullYear();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Stonework Risk — Independent Risk Advisory</title>
+    <title>Stonework Risk — Independent Insurance & Risk Advisory | Dallas, Texas</title>
     <meta
       name="description"
-      content="Stonework Risk is an independent insurance and risk advisory for entrepreneurs, business owners, and high-net-worth individuals. Dallas, Texas. Launching soon."
+      content="Stonework Risk is an independent insurance agency in Dallas, Texas. Commercial, personal, and private client coverage for entrepreneurs, business owners, and high-net-worth individuals."
     />
+    <link rel="canonical" href="https://www.stoneworkrisk.com/" />
+    <meta name="robots" content="index, follow" />
+
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -25,8 +124,12 @@ const year = new Date().getFullYear();
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
-    <meta property="og:title" content="Stonework Risk" />
-    <meta property="og:description" content="An independent risk advisory. Built for those who build. Dallas, Texas." />
+
+    <meta property="og:title" content="Stonework Risk — Independent Insurance & Risk Advisory" />
+    <meta
+      property="og:description"
+      content="An independent insurance agency in Dallas, Texas. Built for those who build."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.stoneworkrisk.com" />
     <meta property="og:image" content="https://www.stoneworkrisk.com/stonework-og.png" />
@@ -39,6 +142,8 @@ const year = new Date().getFullYear();
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=EB+Garamond:ital@0;1&family=Montserrat:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
     <style>
       :root {
@@ -56,6 +161,7 @@ const year = new Date().getFullYear();
       * { box-sizing: border-box; }
 
       html, body { margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
 
       body {
         background-color: var(--paper);
@@ -70,25 +176,101 @@ const year = new Date().getFullYear();
         min-height: 100vh;
       }
 
-      /* thin architectural frame */
+      /* thin architectural frame — top edge is carried by the nav bar */
       .frame {
         position: fixed;
         inset: 18px;
         border: 1px solid var(--hairline);
+        border-top: none;
         pointer-events: none;
         z-index: 1;
       }
 
+      /* ── nav ───────────────────────────────────────────────── */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--paper);
+        border-bottom: 1px solid var(--hairline);
+      }
+      .nav-inner {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .nav-mark {
+        font-family: var(--label);
+        font-weight: 500;
+        font-size: 12px;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--navy);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        font-family: var(--label);
+        font-weight: 400;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .nav-links a {
+        color: var(--navy-70);
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s ease, border-color 0.2s ease;
+      }
+      .nav-links a:hover { color: var(--navy); border-color: var(--sand); }
+      .nav-links a.tel { color: var(--navy); font-weight: 500; }
+
+      /* ── shared layout ─────────────────────────────────────── */
       .wrap {
         position: relative;
         z-index: 2;
         max-width: 760px;
         margin: 0 auto;
-        padding: 7vh 32px 48px;
+        padding: 6vh 32px 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+      }
+
+      section {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 74px 32px;
+        border-top: 1px solid var(--hairline);
+        scroll-margin-top: 68px;
+      }
+      .section-label {
+        font-family: var(--label);
+        font-weight: 400;
+        font-size: 11px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: var(--sand);
+        margin: 0 0 30px;
+      }
+      .section-title {
+        font-family: var(--display);
+        font-weight: 400;
+        font-style: italic;
+        font-size: clamp(25px, 3.6vw, 34px);
+        line-height: 1.2;
+        margin: 0 0 34px;
       }
 
       .eyebrow {
@@ -98,14 +280,7 @@ const year = new Date().getFullYear();
         letter-spacing: 0.32em;
         text-transform: uppercase;
         color: var(--navy-70);
-        margin: 0 0 7vh;
-      }
-
-      .divider {
-        width: 72px;
-        height: 1px;
-        background: var(--hairline);
-        margin: 60px 0;
+        margin: 0 0 6vh;
       }
 
       /* brand wordmark */
@@ -142,50 +317,121 @@ const year = new Date().getFullYear();
       }
       .lede + .lede { margin-top: 18px; }
 
-      /* services */
-      .services {
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 14px 28px;
+        margin: 42px 0 64px;
+      }
+
+      /* ── coverage ──────────────────────────────────────────── */
+      .cov-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 36px;
-        width: 100%;
-        max-width: 660px;
-        margin: 8px 0;
-        text-align: center;
+        gap: 44px 36px;
+        text-align: left;
       }
-      .service .num {
+      .cov-group h3 {
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: 22px;
+        margin: 0 0 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--hairline);
+        color: var(--navy);
+      }
+      .cov-group ul { list-style: none; margin: 0; padding: 0; }
+      .cov-group li {
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--navy-70);
+        padding: 7px 0;
+      }
+
+      /* ── approach ──────────────────────────────────────────── */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        text-align: left;
+      }
+      .step .num {
         font-family: var(--label);
         font-weight: 400;
         font-size: 11px;
         letter-spacing: 0.3em;
         color: var(--sand);
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
-      .service h3 {
+      .step h3 {
         font-family: var(--display);
         font-weight: 500;
         font-size: 23px;
-        margin: 0 0 8px;
+        margin: 0 0 10px;
         color: var(--navy);
       }
-      .service p {
-        font-size: 15px;
-        line-height: 1.55;
+      .step p {
+        font-size: 16px;
+        line-height: 1.6;
         color: var(--navy-70);
         margin: 0;
       }
 
-      /* CTA */
-      .cta {
-        width: 100%;
-        max-width: 460px;
-        margin: 8px 0 0;
+      /* ── about ─────────────────────────────────────────────── */
+      .about { max-width: 620px; text-align: left; }
+      .about p {
+        font-size: clamp(16px, 2vw, 18px);
+        line-height: 1.75;
+        color: var(--navy-70);
+        margin: 0 0 18px;
       }
+      .about p:last-child { margin-bottom: 0; }
+      .about .who {
+        font-family: var(--label);
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--navy);
+        margin-top: 26px;
+      }
+
+      /* ── contact ───────────────────────────────────────────── */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        text-align: left;
+        align-items: start;
+      }
+      .details dt {
+        font-family: var(--label);
+        font-weight: 400;
+        font-size: 10.5px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--sand);
+        margin: 0 0 6px;
+      }
+      .details dd {
+        margin: 0 0 24px;
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--navy-70);
+      }
+      .details dd:last-child { margin-bottom: 0; }
+      .details a { color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--hairline); }
+      .details a:hover { border-color: var(--sand); }
+
+      .cta { width: 100%; }
       .cta .kicker {
         font-family: var(--label);
         font-weight: 400;
         font-size: 11px;
-        letter-spacing: 0.3em;
+        letter-spacing: 0.24em;
         text-transform: uppercase;
         color: var(--navy-70);
         margin: 0 0 22px;
@@ -230,13 +476,40 @@ const year = new Date().getFullYear();
       }
       button:hover { background: transparent; color: var(--navy); }
 
-      /* footer */
+      .btn-ghost {
+        display: inline-block;
+        font-family: var(--label);
+        font-weight: 400;
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--navy);
+        text-decoration: none;
+        border: 1px solid var(--navy);
+        padding: 15px 26px;
+        transition: background 0.25s ease, color 0.25s ease;
+      }
+      .btn-ghost:hover { background: var(--navy); color: var(--paper); }
+
+      .call-link {
+        font-family: var(--label);
+        font-weight: 400;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        color: var(--navy);
+        text-decoration: none;
+        border-bottom: 1px solid var(--hairline);
+        padding-bottom: 3px;
+      }
+      .call-link:hover { border-color: var(--sand); }
+
+      /* ── footer ────────────────────────────────────────────── */
       footer {
         position: relative;
         z-index: 2;
-        max-width: 760px;
-        margin: 96px auto 0;
-        padding: 28px 32px 64px;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 32px 64px;
         border-top: 1px solid var(--hairline);
         text-align: center;
       }
@@ -257,14 +530,24 @@ const year = new Date().getFullYear();
         letter-spacing: 0.06em;
         line-height: 1.6;
         color: var(--navy-45);
-        max-width: 560px;
+        max-width: 620px;
         margin: 18px auto 0;
       }
 
+      @media (max-width: 860px) {
+        .cov-grid { grid-template-columns: repeat(2, 1fr); }
+        .steps { grid-template-columns: 1fr; gap: 34px; }
+        .contact-grid { grid-template-columns: 1fr; gap: 44px; }
+      }
+
       @media (max-width: 600px) {
-        .services { grid-template-columns: 1fr; gap: 30px; max-width: 320px; }
-        .eyebrow { margin-bottom: 9vh; }
-        .frame { inset: 12px; }
+        .cov-grid { grid-template-columns: 1fr; gap: 34px; }
+        .nav-inner { padding: 13px 20px; gap: 14px; }
+        .nav-links { gap: 16px; font-size: 10px; letter-spacing: 0.14em; }
+        .nav-links .hide-sm { display: none; }
+        section { padding: 56px 24px; }
+        .eyebrow { margin-bottom: 8vh; }
+        .frame { inset: 12px; border-top: none; }
       }
     </style>
   </head>
@@ -272,8 +555,21 @@ const year = new Date().getFullYear();
   <body>
     <div class="frame"></div>
 
-    <main class="wrap">
-      <p class="eyebrow">Independent Risk Advisory · Dallas, Texas</p>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-mark" href="#top">Stonework Risk</a>
+        <div class="nav-links">
+          <a class="hide-sm" href="#coverage">Coverage</a>
+          <a class="hide-sm" href="#approach">Approach</a>
+          <a class="hide-sm" href="#about">About</a>
+          <a href="#contact">Contact</a>
+          {phone && <a class="tel" href={`tel:${phoneHref}`}>{phone}</a>}
+        </div>
+      </div>
+    </nav>
+
+    <main id="top" class="wrap">
+      <p class="eyebrow">Independent Insurance &amp; Risk Advisory · Dallas, Texas</p>
 
       <div class="mark">
         <img
@@ -300,55 +596,130 @@ const year = new Date().getFullYear();
         advocate on your behalf when it matters most.
       </p>
 
-      <div class="divider"></div>
-
-      <div class="services">
-        <div class="service">
-          <span class="num">01</span>
-          <h3>Business</h3>
-          <p>Coverage structured around how your company actually operates and grows.</p>
-        </div>
-        <div class="service">
-          <span class="num">02</span>
-          <h3>Personal</h3>
-          <p>Protection for the assets and the people behind the enterprise.</p>
-        </div>
-        <div class="service">
-          <span class="num">03</span>
-          <h3>Private Client</h3>
-          <p>Bespoke programs for complex, high-net-worth exposures.</p>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="cta">
-        <p class="kicker">Launching soon · By introduction</p>
-        <form action={formAction} method="POST">
-          <div class="field">
-            <input type="text" name="name" placeholder="Name" autocomplete="name" />
-          </div>
-          <div class="field">
-            <input type="email" name="email" placeholder="Email" autocomplete="email" required />
-          </div>
-          <div class="field">
-            <textarea name="message" placeholder="A note (optional)" rows="1"></textarea>
-          </div>
-          <input type="hidden" name="_subject" value="New inquiry — stoneworkrisk.com" />
-          <button type="submit">Request an introduction</button>
-        </form>
+      <div class="hero-actions">
+        <a class="btn-ghost" href="#contact">Request a consultation</a>
+        {phone && <a class="call-link" href={`tel:${phoneHref}`}>or call {phone}</a>}
       </div>
     </main>
 
+    <section id="coverage">
+      <p class="section-label">Coverage</p>
+      <h2 class="section-title">What we place</h2>
+      <div class="cov-grid">
+        {coverage.map((g) => (
+          <div class="cov-group">
+            <h3>{g.group}</h3>
+            <ul>
+              {g.lines.map((line) => <li>{line}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="approach">
+      <p class="section-label">Approach</p>
+      <h2 class="section-title">How an engagement works</h2>
+      <div class="steps">
+        {approach.map((s) => (
+          <div class="step">
+            <span class="num">{s.num}</span>
+            <h3>{s.title}</h3>
+            <p>{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="about">
+      <p class="section-label">About</p>
+      <h2 class="section-title">An operator's agency</h2>
+      <div class="about">
+        <p>
+          Stonework Risk is an independent insurance agency in Dallas, led by Kris
+          Gardner. Kris runs other operating companies alongside the agency, so he has
+          bought these policies as a client before selling them as a broker, and he
+          reads a schedule of coverage the way an owner does — looking for what happens
+          on the worst day.
+        </p>
+        <p>
+          Independent means no quota and no house carrier. We are paid to place the
+          right structure, which includes telling you when your current program is
+          already the right one.
+        </p>
+        <p class="who">Kris Gardner · Principal</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Start a conversation</h2>
+      <div class="contact-grid">
+        <dl class="details">
+          {phone && (
+            <>
+              <dt>Telephone</dt>
+              <dd><a href={`tel:${phoneHref}`}>{phone}</a></dd>
+            </>
+          )}
+          <dt>Email</dt>
+          <dd><a href={`mailto:${email}`}>{email}</a></dd>
+
+          <dt>Office</dt>
+          <dd>
+            {address.street}<br />
+            {address.city}, {address.state} {address.zip}
+          </dd>
+
+          <dt>Hours</dt>
+          <dd>{hours}</dd>
+
+          {tdiLicense && (
+            <>
+              <dt>Texas License</dt>
+              <dd>{tdiLicense}</dd>
+            </>
+          )}
+        </dl>
+
+        <div class="cta">
+          <p class="kicker">Tell us what you're building</p>
+          <form action={formAction} method="POST">
+            <div class="field">
+              <input type="text" name="name" placeholder="Name" autocomplete="name" />
+            </div>
+            <div class="field">
+              <input type="text" name="company" placeholder="Company" autocomplete="organization" />
+            </div>
+            <div class="field">
+              <input type="email" name="email" placeholder="Email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <input type="tel" name="phone" placeholder="Phone (optional)" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <textarea name="message" placeholder="A note (optional)" rows="1"></textarea>
+            </div>
+            <input type="hidden" name="_subject" value="New inquiry — stoneworkrisk.com" />
+            <button type="submit">Request a consultation</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <footer>
       <p class="foot-line">
-        <a href={`mailto:${email}`}>{email}</a> &nbsp;·&nbsp; Dallas, Texas &nbsp;·&nbsp;
+        <a href={`mailto:${email}`}>{email}</a>
+        {phone && <> &nbsp;·&nbsp; <a href={`tel:${phoneHref}`}>{phone}</a></>}
+        &nbsp;·&nbsp; Dallas, Texas &nbsp;·&nbsp;
         <a href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
       </p>
       <p class="foot-fine">
-        Stonework Risk is a licensed independent insurance agency (Texas). Errors &amp;
-        omissions insured. Coverage is subject to underwriting review, policy terms, and
-        carrier availability. © {year} Stonework Risk. All rights reserved.
+        Stonework Risk is a licensed independent insurance agency in the State of Texas
+        {tdiLicense && <> (license {tdiLicense})</>}.
+        {founded && <> Established {founded}.</>}
+        Errors &amp; omissions insured. Coverage is subject to underwriting review, policy
+        terms, and carrier availability. © {year} Stonework Risk. All rights reserved.
       </p>
     </footer>
   </body>

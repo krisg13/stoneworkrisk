@@ -1,7 +1,10 @@
 # Stonework Risk — launch site
 
-A single-page "launching soon" website for Stonework Risk, built with [Astro](https://astro.build).
+A single-page website for Stonework Risk, built with [Astro](https://astro.build).
 Editorial / architect aesthetic matched to the logo. Lead capture runs through Formspree.
+
+Sections: hero, Coverage, Approach, About, Contact — with a sticky anchor nav and
+`InsuranceAgency` structured data for search engines.
 
 **Live:** https://stoneworkrisk.com
 **Repo:** https://github.com/krisg13/stoneworkrisk
@@ -25,25 +28,50 @@ Push a change to `main` → Cloudflare rebuilds and redeploys automatically in a
 
 ## Editing the site
 
-Everything is in **`src/pages/index.astro`** — one file. The top of it has the easy-to-change values:
+Everything is in **`src/pages/index.astro`** — one file.
+
+### Details you must fill in
+
+The top of the file has three blanks. **Anything left as `""` renders nothing** — the
+phone link, the license line and the founding year each disappear rather than showing a
+placeholder, so a half-filled file never ships something fake:
 
 ```js
-const email = "principals@stoneworkrisk.com";
-const linkedin = "https://www.linkedin.com/in/kris-gardner";
-const formAction = "https://formspree.io/f/mjgdanrd";   // Formspree endpoint
+const phone      = "";   // e.g. "(214) 555-0142"
+const tdiLicense = "";   // Texas Dept. of Insurance agency license number
+const founded    = "";   // e.g. "2025"  -> renders as "Established 2025"
 ```
 
-Below that:
-- **Copy** — the headline, the two intro paragraphs, the three service blurbs, and the footer text are plain HTML you can edit directly.
-- **Colors / fonts** — the `:root` block in the `<style>` section. Brand colors are
-  navy `#0B1D33`, paper `#F8F7F4`, sand `#B7A894`. Fonts are Cormorant Garamond
-  (display), EB Garamond (body), and Montserrat (labels), loaded from Google Fonts.
-- **Wordmark** — "stonework / RISK" is recreated in live text (not an image), so it stays
-  crisp at any size.
+Filling in `phone` lights up four things at once: the nav, a "or call…" link under the
+hero button, a Telephone row in Contact, the footer, and `telephone` in the structured data.
 
-**`preview.html`** is a standalone copy of the page — double-click it to view the design in a
-browser without building anything. If you change `index.astro`, mirror the change here too if
-you want the preview to match (optional).
+### Everything else
+
+Below that, still in the frontmatter:
+
+- **`coverage`** — the three columns of the Coverage section. Add or remove lines freely.
+- **`approach`** — the three numbered steps.
+- **`address`**, **`hours`**, `email`, `linkedin`, `formAction`.
+- **`schema`** — the `InsuranceAgency` JSON-LD. It reads from the values above, so it
+  stays correct on its own; you shouldn't need to touch it.
+
+In the markup below: the headline, the two intro paragraphs, and the About copy are
+plain HTML you can edit directly.
+
+**Colors / fonts** live in the `:root` block in `<style>`. Brand colors are navy
+`#0B1D33`, paper `#F8F7F4`, sand `#B7A894`. Fonts are Cormorant Garamond (display),
+EB Garamond (body), and Montserrat (labels), loaded from Google Fonts.
+
+**Wordmark** — `public/stonework-wordmark.svg`, so it stays crisp at any size.
+
+### preview.html
+
+`preview.html` is a standalone copy of the page you can double-click to view without
+building. It is **generated** — don't edit it by hand. Regenerate after a change:
+
+```bash
+npm run build && npm run preview:html
+```
 
 ### How to push an edit (no command line needed)
 
@@ -93,7 +121,7 @@ default thank-you page), add a hidden field inside the `<form>`:
 Requires [Node.js](https://nodejs.org) 18+.
 
 ```bash
-cd website
+cd ~/Projects/stoneworkrisk
 npm install
 npm run dev      # live preview at http://localhost:4321
 npm run build    # produces the static site in dist/
@@ -106,15 +134,16 @@ You don't need to run any of this to deploy — Cloudflare builds it for you on 
 ## Project structure
 
 ```
-website/
+stoneworkrisk/
 ├── src/
 │   ├── pages/
-│   │   └── index.astro     # the entire page (markup + styles)
-│   └── env.d.ts            # Astro type declarations (auto-generated)
-├── public/
-│   └── favicon.svg         # browser-tab icon
-├── preview.html            # standalone preview, openable in a browser
-├── astro.config.mjs        # Astro config (site URL)
-├── package.json            # dependencies & scripts
-└── README.md               # this file
+│   │   └── index.astro       # the entire page (data + markup + styles)
+│   └── env.d.ts              # Astro type declarations
+├── public/                   # favicons, wordmarks, OG image, email assets
+├── scripts/
+│   └── build-preview.mjs     # regenerates preview.html from dist/
+├── preview.html              # GENERATED standalone preview
+├── astro.config.mjs          # Astro config (site URL)
+├── package.json              # dependencies & scripts
+└── README.md                 # this file
 ```
