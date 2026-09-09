@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "preview:html": "node scripts/build-preview.mjs"
   },
   "dependencies": {
     "astro": "^4.16.0"

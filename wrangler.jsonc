@@ -1,0 +1,13 @@
+{
+  // Static-asset Worker: there is no server-side code, just the folder of
+  // files `astro build` writes. Cloudflare's build runs `npm run build`
+  // and then `wrangler versions upload` / `wrangler deploy`, and without
+  // this file wrangler has no entry point and the deploy step fails.
+  //
+  // "name" must match the Worker in the Cloudflare dashboard.
+  "name": "stoneworkrisk",
+  "compatibility_date": "2026-09-08",
+  "assets": {
+    "directory": "./dist"
+  }
+}
