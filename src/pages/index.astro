@@ -195,6 +195,9 @@ const schema = {
         gap: 24px;
       }
       .nav-mark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
         font-family: var(--label);
         font-weight: 500;
         font-size: 12px;
@@ -204,6 +207,16 @@ const schema = {
         text-decoration: none;
         white-space: nowrap;
       }
+      .nav-monogram {
+        display: block;
+        flex: none;
+        width: auto;
+        /* ~2.9x the wordmark's cap height. The R's leg is heavy enough that
+           the artwork's visual centre sits at its geometric centre (measured
+           0.495), so plain flex centring aligns it — no optical nudge. */
+        height: 24px;
+      }
+      .nav-mark-text { display: block; }
       .nav-links {
         display: flex;
         align-items: center;
@@ -526,6 +539,8 @@ const schema = {
         .nav-inner { padding: 13px 20px; gap: 14px; }
         .nav-links { gap: 16px; font-size: 10px; letter-spacing: 0.14em; }
         .nav-links .hide-sm { display: none; }
+        .nav-mark-text { display: none; }
+        .nav-monogram { height: 28px; }
         section { padding: 56px 24px; }
         .eyebrow { margin-bottom: 8vh; }
         .frame { inset: 12px; border-top: none; }
@@ -538,7 +553,16 @@ const schema = {
 
     <nav class="nav">
       <div class="nav-inner">
-        <a class="nav-mark" href="#top">Stonework Risk</a>
+        <a class="nav-mark" href="#top" aria-label="Stonework Risk — back to top">
+          <img
+            class="nav-monogram"
+            src="/stonework-monogram.svg"
+            width="605"
+            height="627"
+            alt=""
+          />
+          <span class="nav-mark-text">Stonework Risk</span>
+        </a>
         <div class="nav-links">
           <a class="hide-sm" href="#coverage">Coverage</a>
           <a class="hide-sm" href="#approach">Approach</a>
