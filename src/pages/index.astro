@@ -7,7 +7,7 @@
 // ships if you forget one — the phone link, license line and founding
 // year each disappear rather than showing a placeholder.
 const phone      = "";   // e.g. "(214) 555-0142"
-const tdiLicense = "";   // Texas Dept. of Insurance agency license number
+const tdiLicense = "3500649";   // TDI agency license number
 const founded    = "";   // e.g. "2025"  → renders as "Established 2025"
 
 // ─── Confirmed details ─────────────────────────────────────────────────
@@ -38,15 +38,6 @@ const coverage = [
       "Cyber Liability",
       "Management Liability — D&O, EPLI",
       "Business Owner's Policy",
-    ],
-  },
-  {
-    group: "Specialty Practices",
-    lines: [
-      "Auto dealers & open lot",
-      "Gaming and route operators",
-      "Outfitters, guides & outdoor recreation",
-      "ICHRA small-group benefits",
     ],
   },
   {
@@ -329,8 +320,8 @@ const schema = {
       /* ── coverage ──────────────────────────────────────────── */
       .cov-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 44px 36px;
+        grid-template-columns: repeat(2, minmax(0, 330px));
+        gap: 44px 64px;
         text-align: left;
       }
       .cov-group h3 {
@@ -389,15 +380,6 @@ const schema = {
         margin: 0 0 18px;
       }
       .about p:last-child { margin-bottom: 0; }
-      .about .who {
-        font-family: var(--label);
-        font-weight: 500;
-        font-size: 11px;
-        letter-spacing: 0.24em;
-        text-transform: uppercase;
-        color: var(--navy);
-        margin-top: 26px;
-      }
 
       /* ── contact ───────────────────────────────────────────── */
       .contact-grid {
@@ -535,7 +517,6 @@ const schema = {
       }
 
       @media (max-width: 860px) {
-        .cov-grid { grid-template-columns: repeat(2, 1fr); }
         .steps { grid-template-columns: 1fr; gap: 34px; }
         .contact-grid { grid-template-columns: 1fr; gap: 44px; }
       }
@@ -636,18 +617,16 @@ const schema = {
       <h2 class="section-title">An operator's agency</h2>
       <div class="about">
         <p>
-          Stonework Risk is an independent insurance agency in Dallas, led by Kris
-          Gardner. Kris runs other operating companies alongside the agency, so he has
-          bought these policies as a client before selling them as a broker, and he
-          reads a schedule of coverage the way an owner does — looking for what happens
-          on the worst day.
+          Stonework Risk is an independent insurance agency in Dallas, run by operators.
+          We have bought these policies as clients before placing them as brokers, and we
+          read a schedule of coverage the way an owner does — looking for what happens on
+          the worst day.
         </p>
         <p>
           Independent means no quota and no house carrier. We are paid to place the
           right structure, which includes telling you when your current program is
           already the right one.
         </p>
-        <p class="who">Kris Gardner · Principal</p>
       </div>
     </section>
 
@@ -676,7 +655,7 @@ const schema = {
 
           {tdiLicense && (
             <>
-              <dt>Texas License</dt>
+              <dt>TDI Agency License</dt>
               <dd>{tdiLicense}</dd>
             </>
           )}
@@ -716,7 +695,7 @@ const schema = {
       </p>
       <p class="foot-fine">
         Stonework Risk is a licensed independent insurance agency in the State of Texas
-        {tdiLicense && <> (license {tdiLicense})</>}.
+        {tdiLicense && <>, TDI agency license no. {tdiLicense}</>}.
         {founded && <> Established {founded}.</>}
         Errors &amp; omissions insured. Coverage is subject to underwriting review, policy
         terms, and carrier availability. © {year} Stonework Risk. All rights reserved.
