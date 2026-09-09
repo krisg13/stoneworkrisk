@@ -11,3 +11,7 @@ npm-debug.log*
 .DS_Store
 # astro
 .astro/
+
+# wrangler
+.wrangler/
+.dev.vars*

@@ -8,7 +8,7 @@ Sections: hero, Coverage, Approach, About, Contact — with a sticky anchor nav 
 
 **Live:** https://stoneworkrisk.com
 **Repo:** https://github.com/krisg13/stoneworkrisk
-**Hosting:** Cloudflare Pages (auto-deploys on every push to `main`)
+**Hosting:** Cloudflare Workers — Workers Builds auto-deploys on every push to `main`
 
 ---
 
@@ -17,12 +17,17 @@ Sections: hero, Coverage, Approach, About, Contact — with a sticky anchor nav 
 | Piece | Where it lives |
 |-------|----------------|
 | Source code | GitHub repo `krisg13/stoneworkrisk` |
-| Build & hosting | Cloudflare Pages — builds `main` with `npm run build`, serves the `dist/` output |
+| Build & hosting | Cloudflare Workers (Worker `stoneworkrisk`) — Workers Builds runs `npm run build`, then `wrangler` uploads `dist/` as static assets per `wrangler.jsonc` |
 | Domain & DNS | Cloudflare (nameservers `nico` / `simone.ns.cloudflare.com`) |
 | Email | Google Workspace (MX/SPF/DKIM/DMARC records in Cloudflare DNS) |
 | Form submissions | Formspree → principals@stoneworkrisk.com |
 
 Push a change to `main` → Cloudflare rebuilds and redeploys automatically in about a minute.
+
+**`wrangler.jsonc` is required.** The site has no server-side code, so the deploy step
+is `wrangler` uploading `dist/` as static assets. Without that file the build succeeds
+and the deploy fails with *"Missing entry-point to Worker script or to assets directory"* —
+which is what happened to every build between July and September 2026.
 
 ---
 
@@ -106,7 +111,7 @@ default thank-you page), add a hidden field inside the `<form>`:
 ## Domain & DNS notes
 
 - `stoneworkrisk.com` and `www.stoneworkrisk.com` are both attached as **Custom domains**
-  on the Cloudflare Pages project. Both must stay attached for the site to resolve.
+  on the Cloudflare Worker `stoneworkrisk`. Both must stay attached for the site to resolve.
 - A redirect rule forwards one to the other so there's a single canonical address.
 - **Do not delete the email records** in Cloudflare DNS — the five `MX` records and the
   `SPF` / `DKIM` / `DMARC` / `google-site-verification` `TXT` records run Google Workspace
@@ -143,6 +148,7 @@ stoneworkrisk/
 ├── scripts/
 │   └── build-preview.mjs     # regenerates preview.html from dist/
 ├── preview.html              # GENERATED standalone preview
+├── wrangler.jsonc            # Cloudflare Worker config (static assets from dist/)
 ├── astro.config.mjs          # Astro config (site URL)
 ├── package.json              # dependencies & scripts
 └── README.md                 # this file
