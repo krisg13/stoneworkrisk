@@ -1,0 +1,102 @@
+---
+import Base from "../layouts/Base.astro";
+import { email, address, legalName } from "../site.js";
+
+const effective = "November 22, 2026";
+---
+
+<Base
+  title="Privacy Policy — Stonework Risk"
+  description="How Stonework Risk collects, uses and protects the information you share with us."
+  path="/privacy"
+>
+  <main class="doc">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Updated {effective}</p>
+
+    <p>
+      Stonework Risk is the assumed name of {legalName} ("Stonework Risk," "we," "us").
+      This policy explains what information we collect through stoneworkrisk.com and in
+      the course of placing insurance, how we use it, and the choices you have.
+    </p>
+
+    <h2>Information we collect</h2>
+    <ul>
+      <li>
+        <strong>What you send us.</strong> When you use our contact form or email us, we
+        receive what you provide: typically your name, company, email address, phone
+        number and message.
+      </li>
+      <li>
+        <strong>What we need to place coverage.</strong> If you become a client, we collect
+        the information carriers require to quote and issue policies, which may include
+        business, financial, property, vehicle, driver, payroll and loss history
+        information.
+      </li>
+      <li>
+        <strong>Basic technical data.</strong> Like most websites, our hosting provider
+        records standard request data such as IP address, browser type and pages
+        visited, for security and reliability. We do not use advertising cookies or
+        sell access to visitor data.
+      </li>
+    </ul>
+
+    <h2>How we use it</h2>
+    <ul>
+      <li>To respond to your inquiry and provide the services you ask for.</li>
+      <li>To obtain quotes, place, service and renew insurance on your behalf.</li>
+      <li>To help with claims and communicate with insurance carriers about your coverage.</li>
+      <li>To meet our legal, regulatory and licensing obligations.</li>
+    </ul>
+
+    <h2>How we share it</h2>
+    <p>
+      <strong>We do not sell your personal information.</strong> We share it only as
+      needed to serve you: with insurance carriers, wholesale brokers and premium finance
+      companies involved in placing your coverage; with service providers who help us run
+      the agency (for example, email, hosting, form processing and agency management
+      software) under obligations to protect it; and where required by law or by an
+      insurance regulator.
+    </p>
+
+    <h2>How we protect it</h2>
+    <p>
+      We use reasonable administrative, technical and physical safeguards appropriate to
+      the sensitivity of the information, and limit access to people who need it to
+      serve you. As an insurance agency we handle nonpublic personal information in line
+      with the Gramm-Leach-Bliley Act and applicable Texas law.
+    </p>
+
+    <h2>How long we keep it</h2>
+    <p>
+      We keep client records for as long as needed to service your account and as
+      required by insurance record-retention rules. Inquiries that don't become client
+      relationships are kept only as long as reasonably useful.
+    </p>
+
+    <h2>Your choices</h2>
+    <p>
+      You may ask to see, correct or delete the personal information we hold about you,
+      subject to records we're required to keep. Email
+      <a href={`mailto:${email}`}>{email}</a> and we'll respond within a reasonable time.
+    </p>
+
+    <h2>Children</h2>
+    <p>This site is not directed to children under 13, and we do not knowingly collect their information.</p>
+
+    <h2>Changes</h2>
+    <p>
+      If we change this policy, we'll post the new version here and update the date above.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Stonework Risk<br />
+      {address.street}<br />
+      {address.city}, {address.state} {address.zip}<br />
+      <a href={`mailto:${email}`}>{email}</a>
+    </p>
+
+    <p class="back"><a href="/">← Back to stoneworkrisk.com</a></p>
+  </main>
+</Base>

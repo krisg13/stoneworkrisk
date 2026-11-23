@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import { email, address, legalName, tdiLicense } from "../site.js";
+---
+
+<Base
+  title="Licensing & Disclosures — Stonework Risk"
+  description="Licensing, compensation and consumer information for Stonework Risk, an independent insurance agency in Dallas, Texas."
+  path="/licensing"
+>
+  <main class="doc">
+    <h1>Licensing &amp; Disclosures</h1>
+    <p class="updated">Stonework Risk · Dallas, Texas</p>
+
+    <h2>Licensing</h2>
+    <p>
+      Stonework Risk is the assumed name of {legalName}, an independent insurance agency
+      licensed by the Texas Department of Insurance{tdiLicense && <> (agency license no. {tdiLicense})</>}.
+      Our office is at {address.street}, {address.city}, {address.state} {address.zip}.
+    </p>
+    <p>
+      Insurance is placed only in states where the agency and its producers hold the
+      required licenses. License status can be verified with the
+      <a href="https://www.tdi.texas.gov" target="_blank" rel="noopener">Texas Department of Insurance</a>.
+    </p>
+
+    <h2>How we are paid</h2>
+    <p>
+      Like most independent agencies, we are typically paid a commission by the insurance
+      company that issues your policy, calculated as a percentage of the premium. Some
+      carriers also pay agencies additional compensation based on the overall volume,
+      growth or profitability of the business placed with them. Where a service fee
+      applies, it will be disclosed to you in writing before you agree to it.
+    </p>
+    <p>
+      You are welcome to ask about the compensation we receive on any policy we place for
+      you, and we'll tell you.
+    </p>
+
+    <h2>Not a guarantee of coverage</h2>
+    <p>
+      Information on this website is general in nature and does not describe or modify
+      any insurance policy. Coverage is subject to underwriting review and to the terms,
+      conditions and exclusions of the policy actually issued. Coverage is not bound
+      until confirmed in writing by Stonework Risk or the issuing carrier. Submitting the
+      contact form does not bind, change or cancel coverage.
+    </p>
+
+    <h2>Questions or complaints</h2>
+    <p>
+      If you have a question or concern about our service, contact us first at
+      <a href={`mailto:${email}`}>{email}</a> — we'd like the chance to make it right.
+    </p>
+    <p>
+      You may also contact the Texas Department of Insurance for information on
+      companies, coverages, rights or complaints:
+    </p>
+    <ul>
+      <li>Consumer Help Line: 1-800-252-3439</li>
+      <li>Online: <a href="https://www.tdi.texas.gov" target="_blank" rel="noopener">www.tdi.texas.gov</a></li>
+    </ul>
+
+    <p class="back"><a href="/">← Back to stoneworkrisk.com</a></p>
+  </main>
+</Base>

@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import { email } from "../site.js";
+---
+
+<Base
+  title="Thank you — Stonework Risk"
+  description="Your note has been received."
+  path="/thanks"
+  noindex
+>
+  <main class="doc center">
+    <p class="section-label">Received</p>
+    <h1>Thank you.</h1>
+    <div class="rule" style="margin: 28px auto 30px;"></div>
+    <p>
+      Your note is with us. A principal will reply personally, usually within one
+      business day.
+    </p>
+    <p>
+      If it's time-sensitive — a renewal date or a certificate a client is waiting on —
+      email <a href={`mailto:${email}`}>{email}</a> and say so in the subject line.
+    </p>
+    <p class="back"><a class="btn-ghost" href="/">Back to stoneworkrisk.com</a></p>
+  </main>
+</Base>

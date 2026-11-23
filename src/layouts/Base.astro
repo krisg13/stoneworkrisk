@@ -1,0 +1,100 @@
+---
+// Shared shell for every page: <head>, frame, nav and footer.
+import "../styles/site.css";
+import { email, linkedin, phone, phoneHref, tdiLicense, founded, legalName, siteUrl } from "../site.js";
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;        // canonical path, e.g. "/privacy"
+  noindex?: boolean;
+  schema?: object;
+}
+
+const { title, description, path = "/", noindex = false, schema } = Astro.props;
+const year = new Date().getFullYear();
+const canonical = siteUrl + path;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? "noindex, follow" : "index, follow"} />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+
+    <meta property="og:title" content="Stonework Risk — Independent Insurance & Risk Advisory" />
+    <meta
+      property="og:description"
+      content="An independent insurance agency in Dallas, Texas. Built for those who build."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${siteUrl}/stonework-og.png`} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content={`${siteUrl}/stonework-og.png`} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=EB+Garamond:ital@0;1&family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+
+  <body>
+    <div class="frame"></div>
+
+    <nav class="nav">
+      <div class="nav-inner">
+        <a class="nav-mark" href="/#top" aria-label="Stonework Risk — home">
+          <img class="nav-monogram" src="/stonework-monogram.svg" width="605" height="627" alt="" />
+          <span class="nav-mark-text">Stonework Risk</span>
+        </a>
+        <div class="nav-links">
+          <a class="hide-sm" href="/#clients">Clients</a>
+          <a class="hide-sm" href="/#coverage">Coverage</a>
+          <a class="hide-sm" href="/#approach">Approach</a>
+          <a class="hide-sm" href="/#about">About</a>
+          <a href="/#contact">Contact</a>
+          {phone && <a class="tel" href={`tel:${phoneHref}`}>{phone}</a>}
+        </div>
+      </div>
+    </nav>
+
+    <slot />
+
+    <footer>
+      <p class="foot-line">
+        <a href={`mailto:${email}`}>{email}</a>
+        {phone && <> &nbsp;·&nbsp; <a href={`tel:${phoneHref}`}>{phone}</a></>}
+        &nbsp;·&nbsp; Dallas, Texas &nbsp;·&nbsp;
+        <a href={linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      </p>
+      <p class="foot-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/licensing">Licensing &amp; Disclosures</a>
+      </p>
+      <p class="foot-fine">
+        Stonework Risk is the assumed name of {legalName}, a licensed independent insurance
+        agency in the State of Texas{tdiLicense && <>, TDI agency license no. {tdiLicense}</>}.
+        {founded && <> Established {founded}.</>}
+        Errors &amp; omissions insured. Coverage is subject to underwriting review, policy
+        terms, and carrier availability. © {year} Stonework Risk. All rights reserved.
+      </p>
+    </footer>
+  </body>
+</html>

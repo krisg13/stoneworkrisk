@@ -33,41 +33,28 @@ which is what happened to every build between July and September 2026.
 
 ## Editing the site
 
-Everything is in **`src/pages/index.astro`** — one file.
+| What | File |
+|------|------|
+| Shared details — email, address, hours, TDI license, LinkedIn, form endpoint | `src/site.js` |
+| Home page — Who we serve, Coverage, Approach, About + principal, Contact | `src/pages/index.astro` |
+| Head, nav and footer (shared by every page) | `src/layouts/Base.astro` |
+| Colors, fonts and layout | `src/styles/site.css` |
+| Privacy policy | `src/pages/privacy.astro` |
+| Licensing & disclosures | `src/pages/licensing.astro` |
+| Thank-you page shown after the form is sent | `src/pages/thanks.astro` |
 
-### Details you must fill in
+Anything in `src/site.js` left as `""` renders nothing (the phone number is intentionally
+left blank).
 
-The top of the file has three blanks. **Anything left as `""` renders nothing** — the
-phone link, the license line and the founding year each disappear rather than showing a
-placeholder, so a half-filled file never ships something fake:
+In `index.astro`, the lists at the top drive each section: **`clients`** (Who we serve),
+**`coverage`**, **`approach`**, and **`principal`**. To add a headshot, put the photo in
+`public/` and set `photo: "/your-file.jpg"` on `principal`.
 
-```js
-const phone      = "";   // e.g. "(214) 555-0142"
-const tdiLicense = "";   // Texas Dept. of Insurance agency license number
-const founded    = "";   // e.g. "2025"  -> renders as "Established 2025"
-```
-
-Filling in `phone` lights up four things at once: the nav, a "or call…" link under the
-hero button, a Telephone row in Contact, the footer, and `telephone` in the structured data.
-
-### Everything else
-
-Below that, still in the frontmatter:
-
-- **`coverage`** — the three columns of the Coverage section. Add or remove lines freely.
-- **`approach`** — the three numbered steps.
-- **`address`**, **`hours`**, `email`, `linkedin`, `formAction`.
-- **`schema`** — the `InsuranceAgency` JSON-LD. It reads from the values above, so it
-  stays correct on its own; you shouldn't need to touch it.
-
-In the markup below: the headline, the two intro paragraphs, and the About copy are
-plain HTML you can edit directly.
-
-**Colors / fonts** live in the `:root` block in `<style>`. Brand colors are navy
+**Colors / fonts** live in the `:root` block of `src/styles/site.css`. Brand colors are navy
 `#0B1D33`, paper `#F8F7F4`, sand `#B7A894`. Fonts are Cormorant Garamond (display),
 EB Garamond (body), and Montserrat (labels), loaded from Google Fonts.
 
-**Wordmark** — `public/stonework-wordmark.svg`, so it stays crisp at any size.
+**Wordmark** — `public/stonework-wordmark.svg` (Logos 3.0 navy), so it stays crisp at any size.
 
 ### preview.html
 
@@ -93,18 +80,12 @@ You've been editing through GitHub's web interface, which is the simplest path:
 ## The lead form (Formspree)
 
 The form posts to `https://formspree.io/f/mjgdanrd`, which emails submissions to
-principals@stoneworkrisk.com. It's already active and tested.
+principals@stoneworkrisk.com. A small script sends it in the background and then shows
+our own `/thanks` page instead of Formspree's. A hidden `_gotcha` field traps spam bots.
 
 To change where submissions go, or to add an auto-reply, log in at
 [formspree.io](https://formspree.io) and edit the form's settings. If you ever create a new
 form, paste its new endpoint into the `formAction` line in `index.astro`.
-
-Optional: to send visitors back to your own site after they submit (instead of Formspree's
-default thank-you page), add a hidden field inside the `<form>`:
-
-```html
-<input type="hidden" name="_next" value="https://stoneworkrisk.com/?thanks=1" />
-```
 
 ---
 
